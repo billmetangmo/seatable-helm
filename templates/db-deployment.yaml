@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.appName }}-db
+  name: {{ .Values.appName }}-db
+spec:
+  replicas: {{ .Values.db.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}-db
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_LOG_CONSOLE
+          value: "true"
+        - name: MYSQL_ROOT_PASSWORD
+          value: {{ .Values.db.root.password | quote }}
+        image: mariadb:10.4
+        imagePullPolicy: ""
+        name: seatable-mysql
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: {{ .Values.appName }}-db-claim0
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: {{ .Values.appName }}-db-claim0
+        persistentVolumeClaim:
+          claimName: {{ .Values.appName }}-db-claim0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.appName }}-db
+  labels:
+    app: {{ .Values.appName }}-db
+    service: {{ .Values.appName }}-db
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: {{ .Values.appName }}-db

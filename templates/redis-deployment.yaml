@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.appName }}-redis
+  name: {{ .Values.appName }}-redis
+spec:
+  replicas: {{ .Values.redis.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}-redis
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}-redis
+    spec:
+      containers:
+      - image: redis:5.0.7
+        imagePullPolicy: ""
+        name: seatable-redis
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.appName }}-redis
+  labels:
+    app: {{ .Values.appName }}-redis
+    service: {{ .Values.appName }}-redis
+spec:
+  ports:
+  - port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: {{ .Values.appName }}-redis

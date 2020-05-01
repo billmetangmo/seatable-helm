@@ -1,0 +1,11 @@
+apiVersion: v2
+name: Seatable
+version: 0.9.7
+kubeVersion: ">= 1.16.0"
+description: A chart to install Seatable
+maintainers:
+  - name: Chris
+    email: chris@voilaweb.com
+    url: http://nexus.zteo.com
+appVersion: 0.9.7
+deprecated: false

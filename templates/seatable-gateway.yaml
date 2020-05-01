@@ -1,0 +1,30 @@
+{{ if eq .Values.istio.enabled true }}
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ .Values.appName }}-seatable-gateway
+  namespace: default
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 443
+      name: https-{{ .Values.appName }}-seatable
+      protocol: HTTPS
+    hosts:
+    - {{ .Values.fqdn }}
+    tls:
+      credentialName: acme-{{ .Values.TODO }}-secret
+      mode: SIMPLE
+      privateKey: sds
+      serverCertificate: sds
+  - port:
+      number: 80
+      name: http-{{ .Values.appName }}-seatable
+      protocol: HTTP
+    tls:
+      httpsRedirect: true
+    hosts:
+    - {{ .Values.fqdn }}
+{{ end }}

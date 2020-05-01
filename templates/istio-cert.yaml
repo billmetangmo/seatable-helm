@@ -1,0 +1,14 @@
+{{ if eq .Values.istio.enabled true }}
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: istio-{{ .Values.appName }}-certs
+  namespace: istio-system
+spec:
+  dnsNames:
+    - {{ .Values.fqdn }}
+  secretName: acme-{{ .Values.appName }}-secret
+  issuerRef:
+    name: cloudflare-letsencrypt-prod
+    kind: ClusterIssuer
+{{ end }}

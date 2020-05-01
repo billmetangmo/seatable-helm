@@ -1,0 +1,22 @@
+appName: myseatable
+fqdn: www.example.com
+timezone: America/Los_Angeles
+db:
+  replicas: 1
+  storage:
+    class: local-path
+    capacity: 1000Mi
+  root:
+    password: 123456
+app:
+  replicas: 1
+  storage:
+    class: local-path
+    capacity: 1000Mi
+memcached:
+  replicas: 1
+  size: 256
+redis:
+  replicas: 1
+istio:
+  enabled: false
