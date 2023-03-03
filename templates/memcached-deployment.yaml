@@ -14,12 +14,14 @@ spec:
     metadata:
       labels:
         app: {{ .Values.appName }}-memcached
+      annotations:
+        nodeSelector: "beta.kubernetes.io/arch=arm64"
     spec:
       containers:
       - command:
         - memcached
         - -m
-        - {{ .Values.memcached.size }}
+        - "{{ .Values.memcached.size }}"
         image: memcached:1.5.6
         imagePullPolicy: ""
         name: seatable-memcached
