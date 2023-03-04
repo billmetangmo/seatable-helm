@@ -28,7 +28,7 @@ spec:
           value: "False"
         - name: TIME_ZONE
           value: {{ .Values.timezone }}
-        image: seafileltd/seatable:0.9.7
+        image: seatable/seatable-developer
         imagePullPolicy: ""
         name: seatable
         ports:
